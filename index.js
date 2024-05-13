@@ -1,14 +1,17 @@
-function wordBreak(s, wordDict) {
-  const wordSet = new Set(wordDict);
-  const dp = new Array(s.length + 1).fill(false);
-  dp[0] = true;
-  for (let end = 1; end <= s.length; end++) {
-    for (let start = 0; start < end; start++) {
-      if (dp[start] && wordSet.has(s.substring(start, end))) {
-        dp[end] = true;
-        break;
-      }
+function decodeString(s) {
+  const stack = [];
+  for (const char of s) {
+    if (char !== "]") stack.push(char);
+    else {
+      let str = "";
+      while (stack.length && stack[stack.length - 1] !== "[")
+        str = stack.pop() + str;
+      stack.pop();
+      let num = "";
+      while (stack.length && !isNaN(stack[stack.length - 1]))
+        num = stack.pop() + num;
+      stack.push(str.repeat(parseInt(num)));
     }
   }
-  return dp[s.length];
+  return stack.join("");
 }
