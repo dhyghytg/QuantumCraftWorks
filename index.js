@@ -1,17 +1,12 @@
-function decodeString(s) {
-  const stack = [];
-  for (const char of s) {
-    if (char !== "]") stack.push(char);
-    else {
-      let str = "";
-      while (stack.length && stack[stack.length - 1] !== "[")
-        str = stack.pop() + str;
-      stack.pop();
-      let num = "";
-      while (stack.length && !isNaN(stack[stack.length - 1]))
-        num = stack.pop() + num;
-      stack.push(str.repeat(parseInt(num)));
-    }
+function lengthOfLongestSubstring(s) {
+  if (s.length === 0) return 0;
+  const map = new Map();
+  let maxLength = 0;
+  let left = 0;
+  for (let right = 0; right < s.length; right++) {
+    if (map.has(s[right])) left = Math.max(left, map.get(s[right]) + 1);
+    map.set(s[right], right);
+    maxLength = Math.max(maxLength, right - left + 1);
   }
-  return stack.join("");
+  return maxLength;
 }
